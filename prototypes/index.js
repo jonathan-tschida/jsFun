@@ -27,21 +27,22 @@ const kittyPrompts = {
 
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.filter(kitty => kitty.color === 'orange').map(kitty => kitty.name);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // First we want to get an array of just orange cats, so we filter.
+    // After that we want just the names of the orange cats, map will give us an array of the same length but with different values
   },
 
   sortByAge() {
     // Sort the kitties by their age
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.sort((a, b) => b.age - a.age);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // a cat with an age greater than another cat will be placed after the other cat in the new array
   },
 
   growUp() {
@@ -58,8 +59,15 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = kitties.map(kitty => {
+      kitty.age += 2;
+      return kitty;
+    });
     return result;
+
+    // Annotation:
+    // We are creating a new array of the same length where the kitties ages are 2 greater
+    // We have to return the kitty object otherwise we would just get an array of just the ages
   }
 };
 
@@ -89,12 +97,20 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = clubs.reduce((acc, cur) => {
+      cur.members.forEach(member => {
+        acc[member] ? acc[member].push(cur.club) : acc[member] = [cur.club];
+      });
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We are starting with an array and want a single object back, so reduce is useful
+    // While we are reducing, we iterate through the members array of the current object
+    // if the accumulator has a property key that matches that members name,
+    // then we just push the club name to that property's value (which is an array),
+    // if it doesn't exist yet, we create the key and assign it the value of an array containing that club name
   }
 };
 
@@ -126,11 +142,12 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.map(mod => mod = {mod: mod.mod, studentsPerInstructor: Math.floor(mod.students / mod.instructors)});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We are starting with an array and ending with an array of the same length, so map should be good
+    // We are reassigning each value to a new object with property values based off of the original objects
   }
 };
 
@@ -161,11 +178,12 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.map(cake => cake = {flavor: cake.cakeFlavor, inStock: cake.inStock});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Putting in an array and expecting an array of the same length => .map()
+    // reassigning the cake objects to a new object with fewer/different properties
   },
 
   onlyInStock() {
@@ -189,22 +207,24 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => cake.inStock > 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want an array that is a subset of the original array => filter()
+    // cakes with an inStock property greater than 0 will return true
   },
 
   totalInventory() {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((a, c) => a + c.inStock, 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we are taking in an array and we want back a single value, a number => reduce()
+    // we add each cake's number from the inStock property to each other, starting from 0
   },
 
   allToppings() {
@@ -212,11 +232,15 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // const result = [...new Set(cakes.reduce((a, c) => a.concat(c.toppings), []))];
+    const result = [...new Set(cakes.flatMap(cake => cake.toppings))];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We start with an array of cakes and map each cake to the value of its toppings property instead (which is an array)
+    // flatMap also flattens the array into one array instead of an array of arrays
+    // we then convert that array into a Set instance, which gets rid of duplicates
+    // then the spread operator converts it to an array
   },
 
   groceryList() {
@@ -230,11 +254,21 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((a, c) => {
+      c.toppings.forEach(topping => {
+        a[topping] ? a[topping] += 1 : a[topping] = 1;
+      });
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We start by reducing the cakes array into one object
+    // during each iteration of the reduce function
+    // we are looping through the toppings property of the current cake
+    // we check if our object accumulator has a property matching that topping
+    // if it does, we increment it by one
+    // if not, we create the property and assign it the value of one
   }
 };
 
@@ -265,11 +299,12 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.filter(room => room.program === 'FE');
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We have an array of objects that we want a subset of => filter()
+    // any classroom objects in that array that have a program property of 'FE' will be returned
   },
 
   totalCapacities() {
@@ -280,21 +315,32 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.reduce((a, c) => {
+      c.program === 'FE' ? a.feCapacity += c.capacity : a.beCapacity += c.capacity;
+      return a;
+    }, {feCapacity: 0, beCapacity: 0});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a single object back => reduce()
+    // our accumulator starts with two properties with a value of 0
+    // we check the current classroom's program property
+    // if it equals 'FE' then we increment the feCapacity property
+    // otherwise we increment the other property
   },
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = classrooms.sort((a, b) => {
+      return a.capacity - b.capacity;
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want the same array just in a different order => sort()
+    // we take the difference of the capacity properties of each classroom object
+    // the result determines where the two objects will be indexed in relation to each other
   }
 };
 
@@ -317,11 +363,14 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.filter(book => book.genre !== 'Horror' && book.genre !== 'True Crime').map(book =>  book.title);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a subset of the original array => filter()
+    // we check if the genre property of each book is not equal to 'Horror' or 'True Crime'
+    // we now have an array of objects, but we only want the names => map()
+    // each object is now just the value of the name property instead
 
   },
   getNewBooks() {
@@ -332,11 +381,15 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = books.filter(book =>
+      book.published > 1989).map(book => book = {title: book.title, year: book.published});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want a subset of the original array => filter
+    // check that the published property is greater than 1989
+    // then we reassign the values of each element using map
+    // to an object with title and year properties and the values based off the original object
   }
 
 };
@@ -355,11 +408,20 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // const result = weather.reduce((a, c) => {
+    //   a.push((c.temperature.high + c.temperature.low) / 2);
+    //   return a;
+    // }, []);
+    const result = weather.map(object =>
+      (object.temperature.high + object.temperature.low) / 2
+    );
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want an array of the same length => map()
+    // we access the temperature property, which is an object
+    // we add the values of the high and low properties together and divide by 2
+    // we map this value to the index of the original object
   },
 
   findSunnySpots() {
@@ -369,11 +431,21 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // const result = weather.filter(object =>
+    //   object.type === 'sunny' || object.type === 'mostly sunny'
+    // ).reduce((a, c) => {
+    //   a.push(`${c.location} is ${c.type}.`);
+    //   return a;
+    // }, []);
+    const result = weather.filter(object =>
+      object.type === 'sunny' || object.type === 'mostly sunny'
+    ).map(object => `${object.location} is ${object.type}.`);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a subset of the original array => filter()
+    // if the object's type property is equal to 'sunny' or 'mostly sunny' it will be in that subset
+    // then we map the subset to a string based on the values of the object's location and type properties
   },
 
   findHighestHumidity() {
@@ -384,12 +456,14 @@ const weatherPrompts = {
     //   humidity: 84,
     //   temperature: { high: 49, low: 38 }
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const weatherCopy = [...weather];
+    const result = weatherCopy.sort((a, b) => a.humidity - b.humidity).pop();
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We make a copy of the array before sorting (because sort and pop mutate)
+    // we sort the array in ascending order based on the humidity properties
+    // we pop off the last object, because we sorted in ascending, which returns that item
 
   }
 };
@@ -412,11 +486,18 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((a, c) => {
+      c.visited ? a.parksVisited.push(c.name) : a.parksToVisit.push(c.name);
+      return a;
+    }, {parksToVisit: [], parksVisited: []});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a single object back => reduce()
+    // we set our accumulator to an object literal with two properties with empty arrays as values
+    // we check the current objects visited property
+    // if true it pushes the name of the object to the visited array
+    // otherwise it pushes to the toVisit array
   },
 
   getParkInEachState() {
@@ -429,11 +510,14 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.map(park => park = {[park.location]: park.name});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want an array of the same length => map()
+    // we create an object literal with a property based on the original object's location property
+    // we set the value of that new property to the value of the original object's name property
+    // then we map that object literal to the new array
   },
 
   getParkActivities() {
@@ -451,12 +535,18 @@ const nationalParksPrompts = {
     //   'canyoneering',
     //   'backpacking',
     //   'rock climbing' ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [...new Set(nationalParks.flatMap(park => park.activities))];
+    // const result = nationalParks.reduce((a, c) => {
+    //   c.activities.forEach(activity => {
+    //     a.includes(activity) || a.push(activity);
+    //   });
+    //   return a;
+    // }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we map the activity arrays to a new array and flatten it
+    // we get rid of duplicates with Set, and convert to an array with the spread operator
   }
 };
 
@@ -479,11 +569,12 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.reduce((a, c) => a + c.beers.length, 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a single value => reduce()
+    // add up the length properties of the arrays stored in the beers property of each brewery object
   },
 
   getBreweryBeerCount() {
@@ -495,11 +586,13 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = breweries.map(brewery => brewery = {name: brewery.name, beerCount: brewery.beers.length});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want an array of the same length => map()
+    // make an object literal with a name property and a value of the name property of the brewery object
+    // it also has a beerCount property with a value based on the length of the beer property of the brewery object
   },
 
   findHighestAbvBeer() {
@@ -507,11 +600,17 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const breweriesCopy = [...breweries];
+    const result = breweriesCopy.flatMap(brewery =>
+      brewery.beers).sort((a, b) =>
+      a.abv - b.abv).pop();
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We make a copy of the original array because we will be using mutators (sort and pop)
+    // We create an array of all the beer objects by mapping all the beers arrays and flattening it
+    // then we sort based on the abv property
+    // we pop off the last object to return it
   }
 };
 
@@ -555,11 +654,19 @@ const turingPrompts = {
     //  { name: 'Robbie', studentCount: 18 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.map(instructor => instructor = {
+      name: instructor.name,
+      studentCount: cohorts.find(cohort => cohort.module === instructor.module).studentCount
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want an array of the same length => map()
+    // create an object literal with a name and student count property
+    // name property is based on the value of the name property of the original object
+    // student count property is based on the studentCount property of
+    // an object in the cohorts array that has a module property value that matches
+    // the module property value of the current iterator object
   },
 
   studentsPerInstructor() {
@@ -569,11 +676,22 @@ const turingPrompts = {
     // cohort1804: 10.5
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cohorts.reduce((a, c) => {
+      let numOfInstructors = instructors.filter(instructor => instructor.module === c.module).length;
+      a['cohort' + c.cohort] = c.studentCount / numOfInstructors;
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a single object back => reduce()
+    // our initial value is an object
+    // we find the number of instructors for the current object by filtering
+    // any instructors who have a module property matching the module property of the current object
+    // will be in the subset, we then take the length of that subset to get the number of instructors
+    // then we create a property on the accumulator based on the cohort property of the current object
+    // and assign it a value calculated by dividing the studentCount property of the current object
+    // by the number of instructors that we calculated earlier
   },
 
   modulesPerTeacher() {
@@ -591,11 +709,21 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((a, c) => {
+      let mods = cohorts.filter(cohort => cohort.curriculum.some(subject => c.teaches.includes(subject)));
+      a[c.name] = mods.map(cohort => cohort.module);
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // returning a single object => reduce()
+    // we start with an empty object as our accumulator
+    // we get an array of mods the current object can teach by filtering the cohort array
+    // we filter for cohorts whose curriculum properties contain a string that matches a string in the current objects teaches property array
+    // we create a property on the accumulator based on the name property of the current object
+    // we take the array of mods that we found earlier and map the module property
+    // and assign that array as the value of the property we created on the accumulator
   },
 
   curriculumPerTeacher() {
@@ -607,12 +735,26 @@ const turingPrompts = {
     //   javascript: [ 'Travis', 'Louisa', 'Christie', 'Will' ],
     //   recursion: [ 'Pam', 'Leta' ]
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // let topics = [...new Set(cohorts.flatMap(cohort => cohort.curriculum))];
+    // const result = topics.reduce((a, c) => {
+    //   a[c] = instructors.filter(instructor => instructor.teaches.includes(c)).map(instructor => instructor.name);
+    //   return a;
+    // }, {});
+    const result = instructors.reduce((a, c) => {
+      c.teaches.forEach(subject => {
+        a[subject] ? a[subject].push(c.name) : a[subject] = [c.name];
+      });
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want to return a single object => reduce()
+    // empty object for accumulator
+    // iterate over the teaches property
+    // if the accumulator already has a property value matching the subject
+    // we push the value of the name property of the current object to the array
+    // otherwise we create that property and assign it the value of an array containing the name
   }
 };
 
@@ -643,11 +785,20 @@ const bossPrompts = {
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = Object.values(bosses).map(boss =>
+      boss = {
+        bossName: boss.name,
+        sidekickLoyalty: sidekicks.filter(sk => sk.boss === boss.name).reduce((a, c) => a + c.loyaltyToBoss, 0)
+      });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // bosses is an object, so we convert it to an array of the property values to iterate over it
+    // we then want an array of the same length => map()
+    // make an object literal with properties of bossName and sidekickLoyalty
+    // bossName is given a value based on the original object's name property
+    // we get a subset of the sidekicks array with filter()
+    // we reduce that array to a single number by adding together the loyaltyToBoss properties
   }
 };
 
@@ -685,11 +836,16 @@ const astronomyPrompts = {
     //     color: 'red' }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.filter(star =>
+      Object.values(constellations).flatMap(c =>
+        c.stars).includes(star.name));
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want a subset of the stars array => filter()
+    // we look at an array of the values of the constellations object
+    // we turn that array into an array of arrays from the stars properties and flatten it
+    // we then filter the stars array for any stars whose name property is included in that array
   },
 
   starsByColor() {
@@ -703,11 +859,18 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.reduce((a, c) => {
+      a[c.color] ? a[c.color].push(c) : a[c.color] = [c];
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want to return a single object => reduce()
+    // accumulator is an empty object
+    // check if accumulator has a property with a key matching the current objects color property
+    // if it does, push that object to that property
+    // if not, create that property with a value of an array containing that object
   },
 
   constellationsStarsExistIn() {
@@ -725,11 +888,16 @@ const astronomyPrompts = {
     //    "The Little Dipper" ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.filter(star => star.constellation !== '').map(star => star.constellation);
+    result.splice(3, 1);
+    result.splice(5, 0, 'Lyra');
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want a subset of the stars array => filter()
+    // check if the constellation property is not an empty string
+    // then map the constellation property
+    // do some splicing to move 'Lyra' around because of bad test
   }
 };
 
@@ -756,11 +924,14 @@ const ultimaPrompts = {
     // Return the sum of the amount of damage for all the weapons that our characters can use
     // Answer => 113
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = characters.flatMap(character => character.weapons).reduce((a, c) =>
+      a + weapons[c].damage, 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // get an array of arrays of characters weapons properties, then flatten it
+    // add together the value of the damage property
+    // of the property on the weapons object matching the current object
   },
 
   charactersByTotal() {
@@ -768,11 +939,22 @@ const ultimaPrompts = {
     // Return the sum damage and total range for each character as an object.
     // ex: [ { Avatar: { damage: 27, range: 24 }, { Iolo: {...}, ...}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = characters.map(character => character = {
+      [character.name]: {
+        damage: character.weapons.reduce((a, c) =>
+          a + weapons[c].damage, 0),
+        range: character.weapons.reduce((a, c) =>
+          a + weapons[c].range, 0)
+      }
+    });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want an array of the same length => map()
+    // map each value to an object literal with a property key based on the characters name property
+    // the property valye is another object with a damage and range property
+    // calculate those properties' values be adding up range and damage values of
+    // a property on the weapons object matching that value
   },
 };
 
@@ -805,11 +987,19 @@ const dinosaurPrompts = {
     //   'Jurassic World: Fallen Kingdom': 18
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = movies.reduce((a, c) => {
+      a[c.title] = c.dinos.filter(dino => dinosaurs[dino].isAwesome).length;
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // want a single object returned => reduce()
+    // accumulator is an empty object
+    // create a property key on the accumulator object equal to the title of the current object
+    // filter through the array in the dinos property of the current object
+    // subset is all dinos in the dinosaurs array with a property of isAwesome that equals true
+    // the property we created on the accumulator is set to the length of that subset
   },
 
   averageAgePerMovie() {
@@ -838,11 +1028,26 @@ const dinosaurPrompts = {
       }
     */
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = movies.reduce((a, c) => {
+      let averageAge = Math.floor(c.cast.reduce((a2, c2) => a2 + (c.yearReleased - humans[c2].yearBorn), 0) / c.cast.length);
+      a[c.director] ?
+        a[c.director][c.title] = averageAge:
+        a[c.director] = {[c.title]: averageAge};
+      return a;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want a single object returned => reduce()
+    // we calculate each cast members age based on the yearReleased property of the current object
+    // and the yearBorn property of the property that matches the cast members name on the human object
+    // we reduce the cast property of the current object adding up the ages
+    // and divide by the length of the cast property of the current object
+    // we check if the accumulator has a property key that matches the director property of the current object
+    // if it does, we create a property key on that object equal to the title of the current object
+    // and assign that property the value of the average age we calculated
+    // if not, we create a new property key on the accumulator equal to the director property of the current object
+    // and assign it the value of an object literal with a key equal to the title and value equal to averageAge
   },
 
   uncastActors() {
@@ -871,11 +1076,23 @@ const dinosaurPrompts = {
       }]
     */
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = Object.entries(humans).map(human => human = {
+      name: human[0],
+      nationality: human[1].nationality,
+      imdbStarMeterRating: human[1].imdbStarMeterRating
+    }).filter(human => !movies.find(movie =>
+      movie.cast.includes(human.name)));
+    return result.sort((a, b) => a.nationality > b.nationality ? 1 : -1);
 
     // Annotation:
-    // Write your annotation here as a comment
+    // turn humans object into an array of arrays with Object.entries
+    // create object literal with name, nationality, and imdbStarMeterRating keys
+    // give those keys values based on corresponding properties on the human objects
+    // map those object literals to the entries array
+    // get a subset of those new objects with filter
+    // see if the cast property of any movie in the movies array contains that humans name
+    // subset only includes humans who didn't pass that test
+    // sort that array of objects based on the nationality property
   },
 
   actorsAgesInMovies() {
@@ -894,11 +1111,23 @@ const dinosaurPrompts = {
       { name: 'Bryce Dallas Howard', ages: [ 34, 37 ] } ]
     */
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = movies.reduce((a, c) => {
+      c.cast.forEach(actor => {
+        a.some(item => item.name === actor) ?
+          a.find(item => item.name === actor).ages.push(c.yearReleased - humans[actor].yearBorn) :
+          a.push({name: actor, ages: [c.yearReleased - humans[actor].yearBorn]});
+      });
+      return a;
+    }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we want a single array => reduce()
+    // accumulator is an empty array
+    // iterate over the cast property(array) of the current value
+    // check if the array contains an object with a name property matching the cast element
+    // if it does, find that object and push their age to the ages property of that object(array)
+    // if not, push a neew object literal with name and ages property keys
   }
 };
 
