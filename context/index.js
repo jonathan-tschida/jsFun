@@ -16,11 +16,11 @@ const context = {
 
 
     // What is the value of `this` when we call ship.fly()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // ES6 notation makes 'this' the global object since thats where it was declared
   },
 
   exerciseB() {
@@ -30,11 +30,11 @@ const context = {
     }
 
     // What is the value of `this` when we call fn()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //  fn() is executed in the global object, so that's what 'this' will be
   },
 
   exerciseC() {
@@ -49,11 +49,11 @@ const context = {
     el.addEventListener('click', car.getInfo);
 
     // What is the value of `this` when a user clicks on our element and car.getInfo() is triggered?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'el';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // the element is calling the addEventListener() method, making it 'this'
   },
 
   exerciseD() {
@@ -72,11 +72,13 @@ const context = {
     var breed = dog.getBreed();
 
     // What is the value of `this` when we call breed()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // innerFunction is calling the console.log
+    // which is not actually a method of the object
+    // therefore 'this' will be the global object instead of dog
   },
 
   exerciseE() {
@@ -88,11 +90,11 @@ const context = {
 
 
     // What is the value of `this` when we call fn()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // ES6 notation makes 'this' the global object
   },
 
   exerciseF() {
@@ -111,11 +113,11 @@ const context = {
     const storm = new Hero('Ororo', 'weather control', true);
 
     // What is the value of `this` when we call storm.identifyHero()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'instance of Hero';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // identifyHero() is a method, so 'this' would be storm
   },
 
   exerciseG() {
@@ -139,11 +141,12 @@ const context = {
 
 
     // What is the value of `this` when we call monopoly.restart()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // setTimeout is running the callback function where 'this' is being used
+    // which means 'this' will be the global object, since that's where setTimeout runs
   },
 
   exerciseH() {
@@ -159,11 +162,13 @@ const context = {
     obj.method();
 
     // What is the value of `this` when we call obj.arrowFunction()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'obj';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // arrowFunction is ES6 notation
+    // and it is declared inside of the obj(method)
+    // making the obj the context for 'this'
   },
 
   exerciseI() {
@@ -182,11 +187,12 @@ const context = {
     }, poets);
 
     // What is the value of `this` that gets returned on each iteration of poets.map()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'poets';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment. Annotation should include explanation regarding the second argument of `poets` that is being passed
+    // map() has two arguments it can take, the callBack and thisArg
+    // which tells map which context to work in
   },
 
   exerciseJ() {
@@ -196,11 +202,11 @@ const context = {
     });
 
     // What is the value of `this` when a user clicks on our #btn element and the callback is triggered?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'el';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment.
+    // the element is running the function, making it the context for 'this'
   },
 
   exerciseK() {
@@ -212,11 +218,11 @@ const context = {
     };
 
     // What is the value of `this` when we call store.sellMe()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'store';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment.
+    // sellMe() is a method of store, making it the context of 'this'
   },
 
   exerciseL() {
@@ -232,11 +238,12 @@ const context = {
     };
 
     // What is the value of `this` when we call dog.getBreed()?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'dog';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // again, since its a method, the object running it is the context
+    // we then pass 'this' to the setTimeout() function
   },
 
   exerciseM() {
@@ -255,11 +262,11 @@ const context = {
     }
 
     // What is the value of `this` when we call makeBirdNoise.call(robert);
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'robert';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // call() is a prototype method that lets you set the value of this for a given function
   },
 
   exerciseN() {
@@ -281,15 +288,15 @@ const context = {
     var firstBird = new Bird('Calvin', 'budgie');
 
     // What is the value of `this` when we call firstBird.delayNoise();
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'instance of Bird';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we are using bind() to set the value of 'this' for setTimeout
   },
 
   exerciseO() {
-    const button = document.querySelector('#submit');
+    const button = document.getElementById('submit');
 
     button.addEventListener('click', () => {
       console.log(this);
@@ -297,11 +304,11 @@ const context = {
     });
 
     // What is the value of `this` when a user clicks on our button element and the callback is triggered?
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // ES6 notation for the callback function makes 'this' the global object
   },
 
   exerciseP() {
@@ -312,12 +319,12 @@ const context = {
       }
     };
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = 'global window object';
     return result;
 
     // What is the value of `this` when we call child.scream();
     // Annotation:
-    // Write your annotation here as a comment
+    // ES6 notation, the function was declared in the global context
   }
 };
 
