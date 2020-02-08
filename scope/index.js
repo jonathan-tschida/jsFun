@@ -12,7 +12,7 @@ const scope = {
 
       function beautifyPerson() {
         // Log A: personB
-        
+
         if (personB.includes('B')) {
           personB = person;
           personC = personB;
@@ -29,11 +29,14 @@ const scope = {
 
     // Log D: personC
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result =  [{A: 'Ben'}, {B: 'CardiB'}, {C: 'CardiB'}, {D: 'Paul'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: PersonB is 'Ben' because we haven't reassigned it since declaring it
+    // B: PersonC is 'CardiB' because we reassigned it to the value of personB, which points to person
+    // C: PersonB is 'CardiB' because we reasigned it previously
+    // D: PersonC is 'Paul' because changePerson() finished running and we're back in the global scope
   },
 
   exerciseB() {
@@ -63,11 +66,14 @@ const scope = {
 
     // Log D: number
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 75}, {B: 64}, {C: 64}, {D: 30}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A is 75 because let is block scoped (it reverts back to the function scope after the if block)
+    // B is 64 because we're still in that function scope
+    // C stays at 64 because newNumber was also declared inside numberFunction
+    // D is 30 because we're back in global scope
   },
 
   exerciseC() {
@@ -97,11 +103,14 @@ const scope = {
 
     // Log D: greeting
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'Yo'}, {B: 'Hey'}, {C: 'Hey'}, {D: 'Hello'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: let is block scoped so we revert to the function scope here
+    // B: we're in the newPhrase() functional scope
+    // C: since newPhrase was declared in this function, we're sharing scope
+    // D: back in the global scope
   },
 
   exerciseD() {
@@ -131,11 +140,14 @@ const scope = {
 
     // Log D: greeting
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'hi'}, {B: 'welcome'}, {C: 'welcome'}, {D: 'howdy'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: function scope
+    // B: inner function scope
+    // C: scope inheritence
+    // D: global
   },
 
   exerciseE() {
@@ -163,11 +175,14 @@ const scope = {
 
     // Log D: name
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{C: 'Brittany'}, {A: 'Nathaniel'}, {B: 'Nathaniel'}, {D: 'Brittany'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: we are in the outer block scope
+    // B: var is the default declaration and is leaking out of the block
+    // C: global
+    // D: global
   },
 
   exerciseF() {
@@ -198,11 +213,15 @@ const scope = {
 
     // Log E: dog
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'Spot'}, {B: 'Spot'}, {C: 'Biscuit'}, {D: 'Biscuit'}, {E: 'Biscuit'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: no function variable named dog so we look globally
+    // B: same as A
+    // C: we've reassigned global dog to 'Biscuit'
+    // D: same as C
+    // E: same as C
   },
 
   exerciseG() {
@@ -228,11 +247,14 @@ const scope = {
 
     // Log D: fruit
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'reference error'}, {B: 'mango'}, {C: 'mango'}, {D: 'apple'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: we haven't defined fruit in the scope, only declared it
+    // B: mango was assigned in this block
+    // C: mango leaks out
+    // D: global
   },
 
   exerciseH() {
@@ -268,11 +290,15 @@ const scope = {
 
     fn1();
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 4}, {D: 9}, {E: 10}, {B: 9}, {C: 4}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: function scope
+    // D: passed num of 9 to the function
+    // E: 9 + 1 is 10
+    // B: 9 again because fn2 didn't change anything in this scope
+    // C: back to function scope
   },
 
   exerciseI() {
@@ -299,11 +325,15 @@ const scope = {
     eatSnack();
     // Log E: hunger
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 75}, {B: 0}, {C: 75}, {D: 80}, {A: 55}, {B: 0}, {C: 55}, {E: 55}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: modifying the global variable
+    // B: functional scope
+    // C: back to that modified global variable
+    // D: modify the global again
+    // E: repeat A-C again, modifying the global one more time
   },
 
   exerciseJ() {
@@ -315,7 +345,7 @@ const scope = {
       // Log B: toppings
       var toppings = 'chipotle sauce';
 
-      if (toppings === 'chipotle sauce') { 
+      if (toppings === 'chipotle sauce') {
         sandwich = 'not a mediocre sandwich';
       }
 
@@ -340,11 +370,16 @@ const scope = {
     // Log E: sandwich
     // Log F: amandaBynes
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'ketchup sandwich'}, {D: 'gouda'}, {B: undefined}, {C: 'not a mediocre sandwich'}, {E: 'not a mediocre sandwich'}, {F: 'National Treasure'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: global
+    // D: function scope
+    // B: declared but not defined yet
+    // C: modifying global variable
+    // E: same modified global
+    // F: hoisted
   },
 
   exerciseK() {
@@ -361,11 +396,11 @@ const scope = {
 
     // Log B: num
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 7}, {B: 7}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // reassigning global variable inside the if block
   },
 
   exerciseL() {
@@ -393,11 +428,13 @@ const scope = {
 
     // Log C: grade
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 95}, {B: 90}, {C: 90}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: inner function scope
+    // B: modified global variable
+    // C: same as B
   },
 
   exerciseM() {
@@ -419,11 +456,14 @@ const scope = {
 
     // Log D: num
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 5}, {B: 6}, {C: 'reference error'}, {D: 6}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: look at global variable
+    // B: modified global variable
+    // C: num hasn't been defined yet
+    // D: same modified global variable
   },
 
   exerciseN() {
@@ -458,11 +498,16 @@ const scope = {
 
     // Log F: instructor
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{E: 'Pam'}, {A: 'Pam'}, {B: 'Pam'}, {C: 'Louisa'}, {D: 'Louisa'}, {F: 'Louisa'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // E: global
+    // A: still that global variable
+    // B: STILL global
+    // C: reassigned global to 'Louisa'
+    // D: that new global value
+    // F: still that new value
   },
 
   exerciseO() {
@@ -477,11 +522,13 @@ const scope = {
     putOnShoe();
     // Log C: shoe
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{B: 'flipflop'}, {A: undefined}, {C: 'flipflop'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // B: global
+    // A: declared but not defined yet
+    // C: back to global
   },
 
   exerciseP() {
@@ -503,11 +550,12 @@ const scope = {
 
     // Log C: lunch
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{B: 'soup'}, {C: 'soup'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // B: reassigned global (never get to A because undefined is falsey)
+    // C: same reassigned global
   },
 
   exerciseQ(){
@@ -518,7 +566,7 @@ const scope = {
       // Log A: kid
       wildKids.push(kid);
       // Log B: wildKids
-  
+
       let drawOnTheWall = () => {
         let myKid = 'Mandy';
         // Log C: myKid
@@ -540,11 +588,15 @@ const scope = {
 
     myCrazyKidAntics(myKid);
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'Pandora'}, {B: ['Antigone', 'Pandora']}, {C: 'Mandy'}, {D: 'Antigone'}, {E: 'Pandora'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: global
+    // B: modified global
+    // C: functional
+    // D: functional
+    // E: global
   },
 
   exerciseR() {
@@ -556,7 +608,7 @@ const scope = {
       // Log B: myName
 
       let innerFunc = () => {
-        let myName = 'Tesla'; 
+        let myName = 'Tesla';
         // Log C: myName
       };
 
@@ -567,11 +619,14 @@ const scope = {
     parentFunc();
     // Log D: myName
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [{A: 'Rody'}, {B: 'RodyToy'}, {C: 'Tesla'}, {D: 'RodyToyDaniels'}];
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // A: global
+    // B: modified global
+    // C: functional
+    // D: modified global again
   }
 };
 
